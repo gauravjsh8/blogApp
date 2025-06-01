@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: Number,
       requied: true,
-      unique: true,
     },
     photo: {
       public_id: {
