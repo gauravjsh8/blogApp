@@ -19,8 +19,14 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     photo: {
-      type: String,
-      requied: true,
+      public_id: {
+        type: String,
+        requied: true,
+      },
+      url: {
+        type: String,
+        requied: true,
+      },
     },
     education: {
       type: String,
