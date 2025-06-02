@@ -73,6 +73,7 @@ export const register = async (req, res) => {
     // Remove password before sending response
     const userResponse = newUser.toObject();
     delete userResponse.password;
+    userResponse.token = token;
 
     return res.status(201).json({
       success: true,
@@ -124,18 +125,27 @@ export const login = async (req, res) => {
 
     const token = await createTokenAndSaveCookie(existingUser._id, res);
 
-    // Remove password before sending response
     const userResponse = existingUser.toObject();
     delete userResponse.password;
+    userResponse.token = token;
 
     return res.status(200).json({
       success: true,
       message: "User logged in successfully.",
       user: userResponse,
-      token,
     });
   } catch (error) {
     console.error("User login failed:", error);
+    res.status(500).json({ success: false, message: "Server error." });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", { httpOnly: true });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("User logout failed:", error);
     res.status(500).json({ success: false, message: "Server error." });
   }
 };

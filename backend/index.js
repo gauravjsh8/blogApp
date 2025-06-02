@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectToDb } from "./database/db.js";
 import { router } from "./routes/user.routes.js";
+import { blogRouter } from "./routes/blog.routes.js";
+
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -20,6 +22,7 @@ app.use(
 );
 
 app.use("/api/users", router);
+app.use("/api/blogs", blogRouter);
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
