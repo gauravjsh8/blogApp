@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Blog } from "../models/blog.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -63,5 +64,53 @@ export const createBlog = async (req, res) => {
   } catch (error) {
     console.error("Blog creation failed:", error);
     res.status(500).json({ success: false, message: "Server error." });
+  }
+};
+
+export const deleteBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return res.status(404).json({ message: "No blog found" });
+    }
+
+    await blog.deleteOne();
+    return res.status(200).json({ message: "Blog deleted", deletedBlog: blog });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getAllBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find();
+    if (!blogs || blogs.length === 0) {
+      return res.status(404).json({ message: "No blogs found" });
+    }
+
+    return res.status(200).json({ message: "All blogs Found", blogs: blogs });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getSingleBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "Invalid Blog id" });
+    }
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      return res.status(404).json({ message: "No Such blog found" });
+    }
+
+    return res.status(200).json({ message: "Blog Found", blog: blog });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
   }
 };
