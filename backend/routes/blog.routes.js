@@ -3,7 +3,9 @@ import {
   createBlog,
   deleteBlog,
   getAllBlogs,
+  getMyBlog,
   getSingleBlog,
+  updateBlog,
 } from "../controller/blog.controller.js";
 import { isAdmin, isAuthenticated } from "../middleware/authUser.js";
 
@@ -19,3 +21,5 @@ blogRouter.delete(
 
 blogRouter.get("/get-all-blogs", getAllBlogs);
 blogRouter.get("/single-blog/:id", getSingleBlog);
+blogRouter.get("/getMyBlog", isAuthenticated, isAdmin("admin"), getMyBlog);
+blogRouter.put("/update/:id", isAuthenticated, isAdmin("admin"), updateBlog);

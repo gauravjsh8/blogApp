@@ -149,3 +149,12 @@ export const logout = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error." });
   }
 };
+
+export const getMyProfile = async (req, res) => {
+  const user = req.user;
+  res.status(200).json({ user: user });
+};
+export const getAdmins = async (req, res) => {
+  const admins = await User.find({ role: "admin" });
+  res.status(200).json({ admin: admins });
+};

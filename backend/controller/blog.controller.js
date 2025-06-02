@@ -114,3 +114,66 @@ export const getSingleBlog = async (req, res) => {
     return res.status(500).json({ message: "Server Error" });
   }
 };
+
+export const getMyBlog = async (req, res) => {
+  try {
+    const createdBy = req.user._id;
+
+    const myBlog = await Blog.find({ createdBy });
+
+    return res.status(200).json({ message: "Blog Found", blog: myBlog });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const updateBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: "Invalid Blog id" });
+    }
+
+    console.log("Incoming update body:", req.body);
+
+    const updateData = { ...req.body };
+
+    // If image is provided, handle it here
+    if (req.files && req.files.blogImage) {
+      const { blogImage } = req.files;
+
+      const allowedFileFormats = ["image/jpg", "image/png"];
+      if (!allowedFileFormats.includes(blogImage.mimetype)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid photo. Only PNG and JPG formats allowed.",
+        });
+      }
+
+      const cloudinaryResponse = await cloudinary.uploader.upload(
+        blogImage.tempFilePath
+      );
+
+      if (cloudinaryResponse && !cloudinaryResponse.error) {
+        updateData.blogImage = {
+          public_id: cloudinaryResponse.public_id,
+          url: cloudinaryResponse.url,
+        };
+      }
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedBlog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    return res.status(200).json({ message: "Blog Updated", blog: updatedBlog });
+  } catch (error) {
+    console.log("Error", error);
+    return res.status(500).json({ message: "Server Error", error });
+  }
+};
