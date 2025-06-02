@@ -6,11 +6,13 @@ import { blogRouter } from "./routes/blog.routes.js";
 
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(
   fileUpload({
