@@ -7,6 +7,7 @@ import { blogRouter } from "./routes/blog.routes.js";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,6 +15,13 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(
   fileUpload({
     useTempFiles: true,

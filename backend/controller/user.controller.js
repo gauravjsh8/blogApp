@@ -22,13 +22,14 @@ export const register = async (req, res) => {
     }
 
     const { photo } = req.files;
-    const allowedFileFormats = ["image/jpg", "image/png"];
+    const allowedFileFormats = ["image/jpg", "image/jpeg", "image/png"];
     if (!allowedFileFormats.includes(photo.mimetype)) {
       return res.status(400).json({
         success: false,
         message: "Invalid photo. Only PNG and JPG formats allowed.",
       });
     }
+    console.log("Uploaded photo MIME type:", photo.mimetype);
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
