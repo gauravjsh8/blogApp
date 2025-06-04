@@ -19,7 +19,7 @@ export const createBlog = async (req, res) => {
     }
 
     const { blogImage } = req.files;
-    const allowedFileFormats = ["image/jpg", "image/png"];
+    const allowedFileFormats = ["image/jpg", "image/png", "image/jpeg"];
     if (!allowedFileFormats.includes(blogImage.mimetype)) {
       return res.status(400).json({
         success: false,
@@ -28,7 +28,7 @@ export const createBlog = async (req, res) => {
     }
 
     const adminName = req?.user?.name;
-    const adminPhoto = req?.user?.photo;
+    const adminPhoto = req?.user?.photo.url;
     const createdBy = req?.user?._id;
 
     const cloudinaryResponse = await cloudinary.uploader.upload(

@@ -13,22 +13,28 @@ const Hero = () => {
             <Link
               to="/"
               key={blog._id}
-              className="bg-white rounded-lg hover:shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 "
+              className=" group bg-white rounded-lg hover:shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 "
             >
-              <div>
+              <div className="relative">
                 <img
                   src={blog.blogImage.url}
                   className="w-full h-56 object-cover"
                   alt="Blog"
                 />
                 <div></div>
-                <h1>{blog.title}</h1>
+                <h1 className="absolute bottom-5 text-lg font-bold group-hover:text-yellow-500">
+                  {blog.title}
+                </h1>
               </div>
               <div>
-                <img src={blog.adminPhoto} alt="Admin Photo" />
+                <img
+                  src={blog.adminPhoto}
+                  alt="Admin Photo"
+                  className="w-12 h-12 rounded-full border-2 border-yellow-400"
+                />
                 <div>
                   <p>{blog.adminName}</p>
-                  <p>New</p>
+                  <p className="text-sm text-gray-500">New</p>
                 </div>
               </div>
             </Link>
