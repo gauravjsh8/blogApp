@@ -6,9 +6,9 @@ export const createTokenAndSaveCookie = async (userId, res) => {
     expiresIn: "7d",
   });
   res.cookie("token", token, {
-    httpOnly: true, //save from xss
-    secure: true,
-    sameSite: "strict", //save from csrf
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
   });
   await User.findByIdAndUpdate(userId, { token });
   return token;

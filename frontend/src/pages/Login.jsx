@@ -22,6 +22,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
       const data = response.data;
@@ -30,7 +31,7 @@ const Login = () => {
       setEmail("");
       setPassword("");
       setRole("");
-      navigate("home");
+      navigate("/");
     } catch (error) {
       const message =
         error.response?.data?.message ||
