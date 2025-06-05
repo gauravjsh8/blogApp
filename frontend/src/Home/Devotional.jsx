@@ -15,7 +15,7 @@ const Devotional = () => {
           {devotionalBlogs && devotionalBlogs.length > 0 ? (
             devotionalBlogs.map((blog) => (
               <Link
-                to="/"
+                to={`/blogs/${blog._id}`}
                 key={blog._id}
                 className="group bg-white rounded-lg hover:shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
               >

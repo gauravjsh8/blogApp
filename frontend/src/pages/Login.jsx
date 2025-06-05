@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const navigate = useNavigate();
+  const { setProfile, setIsAuthenticated } = useAuth();
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("Login form submitted");
@@ -27,6 +29,14 @@ const Login = () => {
       );
       const data = response.data;
       toast.success(data.message);
+      const profileResponse = await axios.get(
+        "http://localhost:3000/api/users/my-profile",
+        { withCredentials: true }
+      );
+
+      // ✅ Update context
+      setProfile(profileResponse.data.user);
+      setIsAuthenticated(true);
 
       setEmail("");
       setPassword("");

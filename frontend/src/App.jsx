@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Creators from "./pages/Creators";
 import UpdateBlog from "./dashboard/UpdateBlog";
+import BlogDetail from "./pages/BlogDetail";
 
 const App = () => {
   const location = useLocation();
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/creators" element={<Creators />}></Route>
         <Route path="/update-blog/:id" element={<UpdateBlog />}></Route>
+        <Route path="/blogs/:id" element={<BlogDetail />} />
       </Routes>
       {!hideNavbarAndFooter && <Footer />}
     </div>

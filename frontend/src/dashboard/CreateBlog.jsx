@@ -49,7 +49,7 @@ const CreateBlog = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          withCredentials: true, // 👈 this is important for cookie-based auth
+          withCredentials: true,
         }
       );
 

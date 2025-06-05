@@ -11,7 +11,7 @@ const Hero = () => {
         blogs.map((blog) => {
           return (
             <Link
-              to="/"
+              to={`/blogs/${blog._id}`}
               key={blog._id}
               className=" group bg-white rounded-lg hover:shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 "
             >
