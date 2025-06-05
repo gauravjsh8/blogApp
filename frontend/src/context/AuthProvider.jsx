@@ -1,31 +1,34 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
-export const AuthContext = createContext();
 import Cookie from "js-cookie";
 
+export const AuthContext = createContext();
+
 export const AuthProvider = ({ children }) => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState([]);
+  const [blogs, setBlogs] = useState([]); // ✅ Fix missing blogs state
+  const [profile, setProfile] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = Cookie.get("token");
-        const parsedToken = token ? JSON.parse(token) : undefined;
-        if (parsedToken) {
-          const response = await axios.get(
-            "http://localhost:3000/api/users/my-profile",
-            {
-              withCredentials: true,
-            }
-          );
-          console.log("RESP", response);
-          const data = response.data;
-          console.log("DATA", data);
-          setUser(data.user);
-        }
+        const response = await axios.get(
+          "http://localhost:3000/api/users/my-profile",
+          {
+            withCredentials: true,
+          }
+        );
+        const data = response.data;
+
+        console.log(("PROFILEDATA", data));
+
+        setProfile(response.data.user);
+        setIsAuthenticated(true);
       } catch (error) {
-        console.log("Error", error.response);
+        console.log(
+          "Error fetching user:",
+          error.response?.data || error.message
+        );
       }
     };
 
@@ -34,19 +37,23 @@ export const AuthProvider = ({ children }) => {
         const response = await axios.get(
           "http://localhost:3000/api/blogs/get-all-blogs"
         );
-        const data = response.data;
-        setBlogs(data.blogs);
-        console.log(data);
+        setBlogs(response.data.blogs);
       } catch (error) {
-        console.log(error);
+        console.log(
+          "Error fetching blogs:",
+          error.response?.data || error.message
+        );
       }
     };
+
     fetchUser();
     fetchBlogs();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ blogs, user }}>
+    <AuthContext.Provider
+      value={{ blogs, profile, setIsAuthenticated, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );

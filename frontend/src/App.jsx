@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Creators from "./pages/Creators";
+import UpdateBlog from "./dashboard/UpdateBlog";
 
 const App = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/register" element={<Register />}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="/creators" element={<Creators />}></Route>
+        <Route path="/update-blog/:id" element={<UpdateBlog />}></Route>
       </Routes>
       {!hideNavbarAndFooter && <Footer />}
     </div>
